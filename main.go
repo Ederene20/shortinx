@@ -2,8 +2,10 @@ package main
 
 import (
 	"fmt"
+	"time"
 	"net/http"
 	"github.com/gin-gonic/gin"
+	"github.com/bwmarrin/snowflake"
 )
 
 type Url struct {
@@ -35,5 +37,16 @@ func shorten(c *gin.Context) {
 			"error": err.Error()})
 		return
 	}
+
+	node, err := snowflake.NewNode(1)
+	snowflake.Epoch = time.Now().UnixMilli()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	id := node.Generate()
+	fmt.Println(id.Base32())
+
 	c.JSON(http.StatusOK, long_url)
 }
