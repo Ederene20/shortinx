@@ -2,51 +2,23 @@ package main
 
 import (
 	"fmt"
-	"time"
-	"net/http"
-	"github.com/gin-gonic/gin"
-	"github.com/bwmarrin/snowflake"
-)
 
-type Url struct {
-	URL string `json:"url"`
-}
+	"github.com/gin-gonic/gin"
+
+	"github.com/Ederene20/shortinx/models"
+	"github.com/Ederene20/shortinx/controllers"
+)
 
 func main() {
 	router := gin.Default()
-	api_version_1 := "api/v1"
-	router.GET(fmt.Sprint(api_version_1,"/ping"), ping)
-	router.POST(fmt.Sprint(api_version_1,"/shorten"), shorten)
+	models.ConnectDatabase()
+
+	// Simple group: v1
+	v1 := router.Group("/v1") {
+		v1.GET("/ping", controllers.ping)
+		v1.POST("/shorten", controllers.shorten)
+		v1.GET("/urls", controllers.urls)
+	}
 
 	router.Run()
-}
-
-func ping(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{
-		"message": "pong",
-	})
-}
-
-func shorten(c *gin.Context) {
-	var long_url Url
-
-	err := c.BindJSON(&long_url)
-
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": err.Error()})
-		return
-	}
-
-	node, err := snowflake.NewNode(1)
-	snowflake.Epoch = time.Now().UnixMilli()
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-
-	id := node.Generate()
-	fmt.Println(id.Base32())
-
-	c.JSON(http.StatusOK, long_url)
 }
