@@ -53,7 +53,6 @@ func Shorten(c *gin.Context) {
 	// Generate unique ID
 	id, short_url := helpers.GenerateUniqueID()
 	
-	//
 	url := models.Url{UniqueID: id, LongUrl: input.LongUrl, ShortUrl: short_url}
 	models.Database.Create(&url)
 

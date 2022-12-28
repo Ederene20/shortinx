@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-
 	"github.com/gin-gonic/gin"
 
 	"github.com/Ederene20/shortinx/models"
@@ -14,10 +12,12 @@ func main() {
 	models.ConnectDatabase()
 
 	// Simple group: v1
-	v1 := router.Group("/v1") {
-		v1.GET("/ping", controllers.ping)
-		v1.POST("/shorten", controllers.shorten)
-		v1.GET("/urls", controllers.urls)
+	v1 := router.Group("api/v1") 
+	{
+		v1.GET("/ping", controllers.Ping)
+		v1.GET("/:short_url", controllers.GetShortenedUrl)
+		v1.POST("/shorten", controllers.Shorten)
+		v1.GET("/urls", controllers.Urls)
 	}
 
 	router.Run()
