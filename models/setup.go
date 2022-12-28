@@ -18,7 +18,7 @@ func ConnectDatabase() {
 	database, err := gorm.Open(postgres.Open(os.Getenv("POSTGRES_URL")), &gorm.Config{})
 
 	if err != nil {
-		panic(fmt.Sprintf("Failed to connect to database! %s"))
+		panic(fmt.Sprintf("Failed to connect to database!"))
 	}
 
 	err = database.AutoMigrate(&Url{})
