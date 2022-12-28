@@ -2,7 +2,6 @@ package models
 
 import (
 	"gorm.io/gorm"
-	//"github.com/bwmarrin/snowflake"
 )
 
 type Url struct {
