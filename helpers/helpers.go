@@ -1,6 +1,9 @@
 package helpers
 
 import (
+	"fmt"
+	"time"
+
 	"github.com/bwmarrin/snowflake"
 )
 
@@ -11,7 +14,7 @@ func GenerateUniqueID() (string, string) {
 
 	if err != nil {
 		fmt.Println(err)
-		return
+		return "", ""
 	}
 
 	unique_id := node.Generate()
